@@ -2,9 +2,11 @@ const express = require("express");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const dbPath = path.join(__dirname, "covid19India.db");
 let db = null;
@@ -15,9 +17,7 @@ const initialiseDBAndServer = async () => {
       filename: dbPath,
       driver: sqlite3.Database,
     });
-    app.listen(3000, () => {
-      console.log("Server Running");
-    });
+    app.listen(process.env.PORT || 3000, console.log("Server Running"));
   } catch (e) {
     console.log(`DB Error: ${e.message}`);
     process.exit(1);
